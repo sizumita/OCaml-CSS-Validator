@@ -1,0 +1,4 @@
+(executable
+ (public_name css_validator)
+ (name main)
+ (libraries css_validator))
