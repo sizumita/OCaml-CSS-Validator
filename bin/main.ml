@@ -1,14 +1,16 @@
 open Css_validator
 
-let rec pprint = function
-  | Ast.Int n -> string_of_int n
-  | Ast.Plus (n, m) -> Printf.sprintf "(Plus %s %s)" (pprint n) (pprint m)
+let pprint = function
+  | Ast.Ident s -> "Ident " ^ s
+  | Ast.String s -> "String " ^ s
+  | Ast.Hash s -> "Hash " ^ s
+  | Ast.AtKeyword s -> "AtKeyword " ^ s
+  | Ast.Number s -> "Number " ^ s
+  | Ast.Percentage s -> s
+  | Ast.Dimension s -> "Dimension " ^ s
 
-let rec eval = function
-  | Ast.Int n -> n
-  | Ast.Plus (n, m) -> eval n + eval m
 
 let _ =
-  let lexbuf = Lexing.from_channel stdin in
+  let lexbuf = Lexing.from_string "123%" in
   let expr = Parser.prog Lexer.tokenize lexbuf in
-  Printf.printf "%s = %d\n" (pprint expr) (eval expr)
+  Printf.printf "%s" (pprint expr)

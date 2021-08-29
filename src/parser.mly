@@ -2,22 +2,21 @@
 open Ast
 %}
 
-%token LPAREN
-%token RPAREN
+%token <string> IDENT ATKEYWORD STRING HASH PERCENTAGE NUMBER DIMENSION
+%token CDO CDC COLON SEMICOLON INCLUDES DASHMATCH
+%token LP RP LB RB LS RS S
 %token EOF
-%token <int> INT
-%token PLUS
 
-%left PLUS
 
 %start <Ast.expr> prog
 
 %%
 
 prog:
-  | e = expr EOF { e }
-
-expr:
-  | LPAREN; e = expr; RPAREN { e }
-  | i = INT { Int i }
-  | e1 = expr; PLUS; e2 = expr { Plus (e1, e2) }
+  | s = PERCENTAGE { Percentage s }
+  | s = STRING { String s }
+  | s = IDENT EOF { Ident s }
+  | s = HASH EOF { Hash s }
+  | s = ATKEYWORD { AtKeyword s }
+  | s = NUMBER { Number s }
+  | s = DIMENSION { Dimension s }

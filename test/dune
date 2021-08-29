@@ -1,2 +1,4 @@
 (test
- (name css_validator))
+ (name test_css_validator)
+ (libraries css_validator ounit2)
+)

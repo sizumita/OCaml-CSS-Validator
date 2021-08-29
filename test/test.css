@@ -1,0 +1,7 @@
+p:before {
+    content: "文字列";
+}
+
+div:before {
+    content: 'abc';
+}
