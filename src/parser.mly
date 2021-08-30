@@ -34,7 +34,24 @@ prog:
 stylesheet:
   | CDO { Cdo }
   | CDC { Cdc }
+  | stmt = statement { stmt }
+
+statement:
   | set = ruleset { set }
+  | rule = at_rule { rule }
+
+at_rule:
+  | name = ATKEYWORD; args = option(list(any)); value = block { AtRule (name, args, Some(value))}
+  | name = ATKEYWORD; args = option(list(any)); SEMICOLON { AtRule (name, args, None) }
+
+block_values:
+  | value = any { value }
+  | value = block { value }
+  | value = ATKEYWORD { AtKeyword value }
+  | SEMICOLON { SemiColon }
+
+block:
+  | LB values = option(list(block_values)) RB { Block values }
 
 ruleset:
   | selector_ = option(selector) LB RB { RuleSet (selector_, []) }
@@ -51,7 +68,15 @@ declaration:
 
 declaration_value:
   | value = any { value }
+  | value = block { value }
   | value = ATKEYWORD { AtKeyword value }
+
+function_bracket_value:
+  | value = any { value }
+  | value = unused { value }
+
+function_:
+  | name = FUNCTION; values = option(list(function_bracket_value)); RP { Function (name, values) }
 
 any:
   | value = IDENT { Ident value }
@@ -65,8 +90,16 @@ any:
   | INCLUDES { Includes }
   | DASHMATCH { DashMatch }
   | COLON { Colon }
-  | value = FUNCTION; RP { Function (value, None)}
+  | func = function_ { func }
+  | LP values = option(list(function_bracket_value)); RP { PBlock values }
+  | LS values = option(list(function_bracket_value)); RS { SBlock values }
 
+unused:
+  | block_ = block { block_ }
+  | value = ATKEYWORD { AtKeyword value }
+  | SEMICOLON { SemiColon }
+  | CDO { Cdo }
+  | CDC { Cdc }
 
 
 

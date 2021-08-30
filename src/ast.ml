@@ -20,5 +20,9 @@ type expr =
   | RuleSet of expr option * expr list
   | Declaration of expr * expr
   | Function of string * expr list option
+  | Block of expr list option
+  | PBlock of expr list option
+  | SBlock of expr list option
+  | AtRule of string * expr list option * expr option
 
   [@@deriving show]
