@@ -6,7 +6,19 @@ type expr =
   | Number of string
   | Dimension of string
   | Percentage of string
-  | Url of string
+  | Uri of string
   | UnicodeRange of string
-[@@deriving show]
+  | Cdo
+  | Cdc
+  | Null
+  | Includes
+  | DashMatch
+  | Colon
+  | SemiColon
 
+  | Selector of expr list
+  | RuleSet of expr option * expr list
+  | Declaration of expr * expr
+  | Function of string * expr list option
+
+  [@@deriving show]

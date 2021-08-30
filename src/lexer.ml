@@ -94,7 +94,7 @@ let rec lex lexbuf =
     | white_space ->
       update lexbuf;
       lex lexbuf
-    | url -> update lexbuf ; URL (lexeme lexbuf)
+    | url -> update lexbuf ; URI (lexeme lexbuf)
     | unicode_range -> update lexbuf ; UNICODE_RANGE (lexeme lexbuf)
     | string -> update lexbuf ; STRING (lexeme lexbuf)
     | number -> update lexbuf ; NUMBER (lexeme lexbuf)
@@ -102,6 +102,7 @@ let rec lex lexbuf =
     | number, ident -> update lexbuf ; DIMENSION (lexeme lexbuf)
     | '@', ident -> update lexbuf ; ATKEYWORD (lexeme lexbuf)
     | '#', name -> update lexbuf ; HASH (lexeme lexbuf)
+    | ident, '(' -> update lexbuf ; FUNCTION (lexeme lexbuf)
     | ident -> update lexbuf ; IDENT (lexeme lexbuf)
     | "<!--" -> update lexbuf ; CDO
     | "-->" -> update lexbuf ; CDC
@@ -147,3 +148,6 @@ let parse f lexbuf =
 
 let parse_prog lexbuf =
   parse Parser.prog lexbuf
+
+let parse_tokens lexbuf =
+  parse Parser.tokens lexbuf
