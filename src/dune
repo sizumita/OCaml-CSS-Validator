@@ -1,8 +1,9 @@
 (menhir
   (modules parser))
 
-(ocamllex lexer)
-
 (library
-  (name css_validator))
+  (name css_validator)
+   (preprocess (pps sedlex.ppx))
+ (libraries sedlex menhirLib ppx_deriving)
+)
  

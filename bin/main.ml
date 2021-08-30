@@ -9,8 +9,9 @@ let pprint = function
   | Ast.Percentage s -> s
   | Ast.Dimension s -> "Dimension " ^ s
 
+let parse () = 
+  let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel stdin in 
+  Lexer.parse_prog lexbuf
 
-let _ =
-  let lexbuf = Lexing.from_string "123%" in
-  let expr = Parser.prog Lexer.tokenize lexbuf in
-  Printf.printf "%s" (pprint expr)
+let l = parse () |> List.map (fun x -> print_endline (pprint x))
+let () = Printf.printf "%d exprs" @@ List.length l

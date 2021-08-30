@@ -8,11 +8,14 @@ open Ast
 %token EOF
 
 
-%start <Ast.expr> prog
+%start <Ast.expr list> prog
 
 %%
 
 prog:
+  | statements = list(statement) EOF {statements}
+
+statement:
   | s = PERCENTAGE { Percentage s }
   | s = STRING { String s }
   | s = IDENT EOF { Ident s }
