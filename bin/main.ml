@@ -9,6 +9,7 @@ let pprint = function
   | Ast.Percentage s -> s
   | Ast.Dimension s -> "Dimension " ^ s
   | Ast.Url s -> "Url " ^ s
+  | Ast.UnicodeRange s -> "UnicodeRange " ^ s
 
 let parse () = 
   let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel stdin in 

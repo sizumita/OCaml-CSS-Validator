@@ -2,7 +2,7 @@
 open Ast
 %}
 
-%token <string> IDENT ATKEYWORD STRING HASH PERCENTAGE NUMBER DIMENSION URL
+%token <string> IDENT ATKEYWORD STRING HASH PERCENTAGE NUMBER DIMENSION URL UNICODE_RANGE
 %token CDO CDC COLON SEMICOLON INCLUDES DASHMATCH
 %token LP RP LB RB LS RS S
 %token EOF
@@ -24,3 +24,4 @@ statement:
   | s = NUMBER { Number s }
   | s = DIMENSION { Dimension s }
   | s = URL { Url s }
+  | s = UNICODE_RANGE { UnicodeRange s }

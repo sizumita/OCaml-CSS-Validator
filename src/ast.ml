@@ -7,5 +7,6 @@ type expr =
   | Dimension of string
   | Percentage of string
   | Url of string
+  | UnicodeRange of string
 [@@deriving show]
 

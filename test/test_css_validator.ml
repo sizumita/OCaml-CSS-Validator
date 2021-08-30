@@ -39,6 +39,11 @@ let test_url_2 _ = assert_equal (Ast.Url "url(\"http://example.com/abc.png\")") 
 
 let test_url_3 _ = assert_equal (Ast.Url "url(\'http://example.com/abc.png\')") (parse "url(\'http://example.com/abc.png\')")
 
+let test_unicode_range_1 _ = assert_equal (Ast.UnicodeRange "u+123456") (parse "u+123456")
+let test_unicode_range_2 _ = assert_equal (Ast.UnicodeRange "u+123?") (parse "u+123?")
+
+let test_unicode_range_3 _ = assert_equal (Ast.UnicodeRange "U+0-7F") (parse "U+0-7F")
+let test_unicode_range_4 _ = assert_equal (Ast.UnicodeRange "U+0025-00FF") (parse "U+0025-00FF")
 let suite = 
   "suite">:::
   [
@@ -59,6 +64,10 @@ let suite =
     "test_url_1">:: test_url_1;
     "test_url_2">:: test_url_2;
     "test_url_3">:: test_url_3;
+    "test_unicode_range_1">:: test_unicode_range_1;
+    "test_unicode_range_2">:: test_unicode_range_2;
+    "test_unicode_range_3">:: test_unicode_range_3;
+    "test_unicode_range_4">:: test_unicode_range_4;
   ]
 
 let () = run_test_tt_main suite

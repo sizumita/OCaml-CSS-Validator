@@ -38,6 +38,17 @@ let url = [%sedlex.regexp?
     (u_char, r_char, l_char, '(', w, string, w, ')')
   | (u_char, r_char, l_char, '(', w, Star (* これでいいのかわからない *)(Compl ')'), w, ')')
 ]
+let unicode_range_start = [%sedlex.regexp? "u+" | "U+"]
+let unicode_chars = [%sedlex.regexp? '0'..'9' | 'a'..'f' | 'A' .. 'F']
+let unicode_range = [%sedlex.regexp?
+    unicode_range_start, Rep (unicode_chars, 1), Rep ('?', 0 .. 5)
+  | unicode_range_start, Rep (unicode_chars, 2), Rep ('?', 0 .. 4)
+  | unicode_range_start, Rep (unicode_chars, 3), Rep ('?', 0 .. 3)
+  | unicode_range_start, Rep (unicode_chars, 4), Rep ('?', 0 .. 2)
+  | unicode_range_start, Rep (unicode_chars, 5), Rep ('?', 0 .. 1)
+  | unicode_range_start, Rep (unicode_chars, 6)
+  | unicode_range_start, Rep (unicode_chars, 1 .. 6), '-', Rep (unicode_chars, 1 .. 6)
+]
 
 type lexbuf = {
   stream : Sedlexing.lexbuf ;
@@ -84,6 +95,7 @@ let rec lex lexbuf =
       update lexbuf;
       lex lexbuf
     | url -> update lexbuf ; URL (lexeme lexbuf)
+    | unicode_range -> update lexbuf ; UNICODE_RANGE (lexeme lexbuf)
     | string -> update lexbuf ; STRING (lexeme lexbuf)
     | number -> update lexbuf ; NUMBER (lexeme lexbuf)
     | number, '%' -> update lexbuf ; PERCENTAGE (lexeme lexbuf)
