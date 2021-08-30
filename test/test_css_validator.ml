@@ -33,6 +33,12 @@ let test_percentage_1 _ = assert_equal (Ast.Percentage "123%") (parse "123%")
 
 let test_comment_1 _ = assert_equal (Ast.Number "123") (parse "/* abc */ 123")
 
+let test_url_1 _ = assert_equal (Ast.Url "url(http://example.com/abc.png)") (parse "url(http://example.com/abc.png)")
+
+let test_url_2 _ = assert_equal (Ast.Url "url(\"http://example.com/abc.png\")") (parse "url(\"http://example.com/abc.png\")")
+
+let test_url_3 _ = assert_equal (Ast.Url "url(\'http://example.com/abc.png\')") (parse "url(\'http://example.com/abc.png\')")
+
 let suite = 
   "suite">:::
   [
@@ -50,6 +56,9 @@ let suite =
     "test_dimension_1">:: test_dimension_1;
     "test_percentage_1">:: test_percentage_1;
     "test_comment_1">:: test_comment_1;
+    "test_url_1">:: test_url_1;
+    "test_url_2">:: test_url_2;
+    "test_url_3">:: test_url_3;
   ]
 
 let () = run_test_tt_main suite

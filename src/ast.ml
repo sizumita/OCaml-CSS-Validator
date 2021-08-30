@@ -6,5 +6,6 @@ type expr =
   | Number of string
   | Dimension of string
   | Percentage of string
+  | Url of string
 [@@deriving show]
 

@@ -1,7 +1,12 @@
+
 p:before {
     content: "文字列";
 }
 
 div:before {
-    content: 'abc';
+    content: \\u\\r\\l("https://...");
+}
+
+div {
+    background-image: \\u\\r\\l("https://mdn.mozillademos.org/files/16761/star.gif");
 }

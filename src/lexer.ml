@@ -6,6 +6,22 @@ let number = [%sedlex.regexp?
  (Plus digit | (Star digit, '.', Plus digit)),
   Opt (Chars "eE", (Opt Chars "+-"), Plus digit)
 ]
+let u_char = [%sedlex.regexp? 
+    'u'
+  | ('\\', Rep ('0', 0 .. 4), ("55" | "75"), ("\r\n" | Chars "\t\r\n"))
+  | ('\\', 'u')
+]
+let r_char = [%sedlex.regexp? 
+    'r'
+  | ('\\', Rep ('0', 0 .. 4), ("52" | "72"), ("\r\n" | Chars "\t\r\n"))
+  | ('\\', 'r')
+]
+let l_char = [%sedlex.regexp? 
+    'l'
+  | ('\\', Rep ('0', 0 .. 4), ("4c" | "6c"), ("\r\n" | Chars "\t\r\n"))
+  | ('\\', 'l')
+]
+let w = [%sedlex.regexp? Star Chars "\t\r\n"]
 let nonascii = [%sedlex.regexp? Compl 0 .. 177]
 let unicode = [%sedlex.regexp? '\\', Rep (('0'..'9' | 'a'..'f'), 1 .. 6), Opt ("\r\n" | Chars "\n\r\t")]
 let escape = [%sedlex.regexp? unicode | ('\\', Compl ('\n' | '\r' | '0'..'9' | 'a'..'f'))]
@@ -18,6 +34,10 @@ let string = [%sedlex.regexp? (
     '\"', Star (Compl (Chars "\n\r\"") | ('\\', nl) | escape), '\"'
   | '\'', Star (Compl (Chars "\n\r\'") | ('\\', nl) | escape), '\''
 )]
+let url = [%sedlex.regexp?
+    (u_char, r_char, l_char, '(', w, string, w, ')')
+  | (u_char, r_char, l_char, '(', w, Star (* これでいいのかわからない *)(Compl ')'), w, ')')
+]
 
 type lexbuf = {
   stream : Sedlexing.lexbuf ;
@@ -63,6 +83,7 @@ let rec lex lexbuf =
     | white_space ->
       update lexbuf;
       lex lexbuf
+    | url -> update lexbuf ; URL (lexeme lexbuf)
     | string -> update lexbuf ; STRING (lexeme lexbuf)
     | number -> update lexbuf ; NUMBER (lexeme lexbuf)
     | number, '%' -> update lexbuf ; PERCENTAGE (lexeme lexbuf)
