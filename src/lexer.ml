@@ -138,8 +138,11 @@ let rec lex lexbuf =
     | "^=" -> update lexbuf ; STARTSMATCH
     | "$=" -> update lexbuf ; ENDSMATCH
     | "*=" -> update lexbuf ; INMATCH
-    | "=" -> update lexbuf ; MATCH
+    | '=' -> update lexbuf ; MATCH
     | '>' -> update lexbuf ; CHILD
+    | '.' -> update lexbuf ; DOT
+    | '~' -> update lexbuf ; SIBILING
+    | '*' -> update lexbuf ; UNIVERSAL
 
     | eof ->
       update lexbuf ;

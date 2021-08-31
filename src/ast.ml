@@ -17,7 +17,10 @@ type expr =
   | Comma
   | Plus
   | Child
+  | Sibiling
+  | Universal
 
+  | ClassName of string
   | Selector of expr list
   | RuleSet of expr list option * expr list option
   | Declaration of expr * expr list

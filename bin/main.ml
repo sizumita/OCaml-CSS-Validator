@@ -21,6 +21,9 @@ let rec pprint = function
   | Ast.Includes -> "Includes"
   | Ast.Colon -> "Colon"
   | Ast.SemiColon -> "SemiColon"
+  | Sibiling -> "~"
+
+  | ClassName s -> "." ^ s
   | Ast.Selector l -> "Selector: " ^ pprint_list l
   | Ast.RuleSet (Some l, None) -> "RuleSet: " ^ (pprint_list l) ^ " -> None"
   | Ast.RuleSet (Some l, Some l2) -> "RuleSet: " ^ (pprint_list l) ^ " -> " ^ pprint_list l2

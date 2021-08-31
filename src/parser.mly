@@ -6,7 +6,7 @@ open Ast
 %token CDO CDC COLON SEMICOLON
 // = |= ~= ^= $= *=
 %token MATCH DASHMATCH SPACEINMATCH STARTSMATCH ENDSMATCH INMATCH
-%token COMMA PLUS CHILD
+%token COMMA PLUS CHILD DOT SIBILING UNIVERSAL
 %token LP RP LB RB LS RS
 %token EOF
 
@@ -66,6 +66,7 @@ matchs:
   | l = component_value; INMATCH r = component_value; case = option(IDENT) { InMatch (l, r, case) }
 
 component_value:
+  | DOT value = IDENT { ClassName value }
   | value = IDENT { Ident value }
   | value = STRING { String value }
   | value = PERCENTAGE { Percentage value }
@@ -79,6 +80,8 @@ component_value:
   | PLUS { Plus }
   | COLON { Colon }
   | CHILD { Child }
+  | SIBILING { Sibiling }
+  | UNIVERSAL { Universal }
   | LP components = option(list(component_value)); RP { PBlock components }
   | LS components = option(list(component_value)); RS { SBlock components }
   | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
