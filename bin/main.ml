@@ -35,12 +35,11 @@ let rec pprint = function
   | Ast.Declaration (l, l2) -> "Declaration: " ^ (pprint l) ^ " -> " ^ (pprint_list l2)
   | Function (name, None) -> Printf.sprintf "Function(%s)()" name
   | Function (name, Some(values)) -> Printf.sprintf "Function(%s)(%s)" name @@ pprint_list values
-  | Block None -> "{}"
   | PBlock None -> "()"
   | SBlock None -> "[]"
-  | Block Some (l) -> Printf.sprintf "{%s}" @@ pprint_list l
-  | PBlock Some (l) -> Printf.sprintf "(%s)" @@ pprint_list l
-  | SBlock Some (l) -> Printf.sprintf "[%s]" @@ pprint_list l
+  | Block l -> Printf.sprintf "{%s}" @@ pprint_list l
+  | PBlock l -> Printf.sprintf "(%s)" @@ pprint_list l
+  | SBlock l -> Printf.sprintf "[%s]" @@ pprint_list l
   | AtRule (name, None, None) -> name ^ " () ()"
   | AtRule (name, Some(args), None) -> Printf.sprintf "%s (%s) ()" name (pprint_list args)
   | AtRule (name, None, Some(value)) -> Printf.sprintf "%s () (%s)" name (pprint value)

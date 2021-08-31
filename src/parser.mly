@@ -86,9 +86,11 @@ component_value:
   | CHILD { Child }
   | SIBILING { Sibiling }
   | UNIVERSAL { Universal }
-  | LP components = option(list(component_value)); RP { PBlock components }
-  | LS components = option(list(component_value)); RS { SBlock components }
-  | LS declaration_ = declaration; RS { SBlock (Some [declaration_]) }
+  | LP RP { PBlock [] }
+  | LS RS { SBlock [] }
+  | LP components = list(component_value); RP { PBlock components }
+  | LS components = list(component_value); RS { SBlock components }
+  | LS declaration_ = declaration; RS { SBlock [declaration_] }
   | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
 
 // div {...}

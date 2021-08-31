@@ -28,8 +28,8 @@ type expr =
   | Declaration of expr * expr list
   | Function of string * expr list option
   | Block of expr list
-  | PBlock of expr list option
-  | SBlock of expr list option
+  | PBlock of expr list
+  | SBlock of expr list
   | AtRule of string * expr list option * expr option
   | Match of expr * expr * string option
   | DashMatch of expr * expr * string option
