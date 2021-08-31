@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+
+@namespace url(http://www.w3.org/1999/xhtml);
+@namespace svg url(http://www.w3.org/2000/svg);
+/* コードの最上位 */
+@media screen and (min-width: 900px) {
+    article {
+      padding: 1rem 3rem;
+    }
+  }
+  
+  /* 他の条件付き＠規則の中にネスト */
+  @supports (display: flex) {
+    @media screen and (min-width: 900px) {
+      article {
+        display: flex;
+      }
+    }
+  }
+
+  @page {
+    margin: 1cm;
+  }
+  
+  @page :first {
+    margin: 2cm;
+  }
+
+  @font-face {
+    font-family: "Open Sans";
+    src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
+         url("/fonts/OpenSans-Regular-webfont.woff") format("woff");
+  }

@@ -27,7 +27,7 @@ type expr =
   | RuleSet of expr list option * expr list option
   | Declaration of expr * expr list
   | Function of string * expr list option
-  | Block of expr list option
+  | Block of expr list
   | PBlock of expr list option
   | SBlock of expr list option
   | AtRule of string * expr list option * expr option

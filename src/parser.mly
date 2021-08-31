@@ -51,7 +51,9 @@ statement:
 // @media screen {...}
 at_rule:
   | name = ATKEYWORD; component = option(list(component_value)) SEMICOLON; { AtRule (name, component, None) }
-  | name = ATKEYWORD; component = option(list(component_value)) LB set = option(list(at_rule_value)); RB { AtRule (name, component, Some(Block set)) }
+  | name = ATKEYWORD; component = option(list(component_value)) LB set = declaration_list; RB { AtRule (name, component, Some(Block set)) }
+  | name = ATKEYWORD; component = option(list(component_value)) LB set = list(at_rule_value); RB { AtRule (name, component, Some(Block set)) }
+  | name = ATKEYWORD; component = option(list(component_value)) LB RB { AtRule (name, component, Some(Block [])) }
 
 at_rule_value:
   | set = ruleset { set }
@@ -105,6 +107,7 @@ declaration:
   | prop = IDENT; COLON block_ = block { Declaration (Ident prop, [block_])}
 
 block:
-  | LB components = option(list(component_value)); RB { Block components }
+  | LB components = list(component_value); RB { Block components }
+  | LB RB { Block [] }
 
 
