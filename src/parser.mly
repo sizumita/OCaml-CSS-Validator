@@ -76,6 +76,7 @@ component_value:
   | value = URI { Uri value }
   | value = UNICODE_RANGE { UnicodeRange value }
   | match_ = matchs { match_ }
+  | COLON component = component_value { PseudoClass component }
   | COMMA { Comma }
   | PLUS { Plus }
   | COLON { Colon }
@@ -84,8 +85,8 @@ component_value:
   | UNIVERSAL { Universal }
   | LP components = option(list(component_value)); RP { PBlock components }
   | LS components = option(list(component_value)); RS { SBlock components }
+  | LS declaration_ = declaration; RS { SBlock (Some [declaration_]) }
   | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
-  | declaration_ = declaration { declaration_ }
 
 // div {...}
 ruleset:

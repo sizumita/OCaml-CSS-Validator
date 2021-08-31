@@ -21,6 +21,7 @@ type expr =
   | Universal
 
   | ClassName of string
+  | PseudoClass of expr
   | Selector of expr list
   | RuleSet of expr list option * expr list option
   | Declaration of expr * expr list

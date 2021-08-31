@@ -1,0 +1,16 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes */
+
+/* Selects any element with right-to-left text */
+:dir(rtl) {
+    background-color: red;
+  }
+
+/* Selects any <p> in English (en) */
+p:lang(en) {
+    quotes: '\201C' '\201D' '\2018' '\2019';
+  }
+
+  /* Selects any element that would be matched by :link or :visited */
+:any-link {
+    color: green;
+  }
