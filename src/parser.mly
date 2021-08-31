@@ -30,6 +30,11 @@ token:
 
 prog:
   | statements = list(stylesheet) EOF {statements}
+  | error
+    { failwith 
+          (Printf.sprintf "parse error at line %d character %d"
+              ($startpos.pos_lnum) ($startpos.pos_cnum - $startpos.pos_bol)
+              )}
 
 stylesheet:
   | CDO { Cdo }
