@@ -22,7 +22,7 @@ let l_char = [%sedlex.regexp?
   | ('\\', 'l')
 ]
 let w = [%sedlex.regexp? Star Chars "\t\r\n"]
-let nonascii = [%sedlex.regexp? Compl 0 .. 177]
+let nonascii = [%sedlex.regexp? 0x80 .. 0x10ffff]
 let unicode = [%sedlex.regexp? '\\', Rep (('0'..'9' | 'a'..'f'), 1 .. 6), Opt ("\r\n" | Chars "\n\r\t")]
 let escape = [%sedlex.regexp? unicode | ('\\', Compl ('\n' | '\r' | '0'..'9' | 'a'..'f'))]
 let nmchar = [%sedlex.regexp? (('_' | 'a'..'z' | '0'..'9' | '-') | nonascii | escape)]
@@ -73,6 +73,15 @@ let new_line ?(n=0) lexbuf =
         pos_bol = lcp.pos_cnum;
     }
 
+let string_of_ParseError (file, line, cnum, tok) =
+  let file_to_string file =
+    if file = "" then ""
+    else " on file " ^ file
+  in
+  Printf.sprintf
+    "Parse error%s line %i, column %i, token %s"
+    (file_to_string file)
+    line cnum tok
 
 let update lexbuf =
   let new_pos = Sedlexing.lexeme_end lexbuf.stream in
@@ -81,6 +90,14 @@ let update lexbuf =
 
 let lexeme { stream; _ } = Sedlexing.Utf8.lexeme stream
 
+exception ParseError of (string * int * int * string)
+
+let raise_ParseError lexbuf =
+  let {pos; _} = lexbuf in
+  let line = pos.pos_lnum in
+  let col = pos.pos_cnum - pos.pos_bol in
+  let tok = lexeme lexbuf in
+  raise @@ ParseError (pos.pos_fname, line, col, tok)
 
 let rec lex lexbuf =
   let buf = lexbuf.stream in
@@ -120,15 +137,15 @@ let rec lex lexbuf =
     | eof ->
       update lexbuf ;
       EOF
-    | _ -> failwith "Parse error"
-and comment lexbuf =
+    | _ -> update lexbuf; raise_ParseError lexbuf
+    and comment lexbuf =
   let buf = lexbuf.stream in
   match%sedlex buf with
   | "*/" -> update lexbuf; lex lexbuf
   | '\n' -> update lexbuf; new_line lexbuf; comment lexbuf
-  | eof -> failwith "Parse error"
+  | eof -> update lexbuf; raise_ParseError lexbuf
   | any -> update lexbuf ; comment lexbuf
-  | _ -> failwith "Parse error"
+  | _ -> update lexbuf; raise_ParseError lexbuf
 
 let parse f lexbuf =
   let lexer () =

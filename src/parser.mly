@@ -32,7 +32,7 @@ prog:
   | statements = list(stylesheet) EOF {statements}
   | error
     { failwith 
-          (Printf.sprintf "parse error at line %d character %d"
+          (Printf.sprintf "parse error at line %d column %d"
               ($startpos.pos_lnum) ($startpos.pos_cnum - $startpos.pos_bol)
               )}
 

@@ -42,8 +42,15 @@ and pprint_list l =
 
 
 let parse () = 
-  let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel stdin in 
-  Lexer.parse_prog lexbuf
+  match
+    let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel stdin in 
+    Lexer.parse_prog lexbuf
+  with
+    | exception Lexer.ParseError e -> begin
+      print_endline @@ Lexer.string_of_ParseError e;
+      []
+    end
+    | stmt -> stmt
 
 let l = parse () |> List.map (fun x -> print_endline (pprint x))
 let () = Printf.printf "%d exprs" @@ List.length l
