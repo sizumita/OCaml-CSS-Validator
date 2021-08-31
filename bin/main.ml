@@ -18,9 +18,11 @@ let rec pprint = function
   | Ast.Colon -> "Colon"
   | Ast.SemiColon -> "SemiColon"
   | Ast.Selector l -> "Selector: " ^ pprint_list l
-  | Ast.RuleSet (Some l, l2) -> "RuleSet: " ^ (pprint l) ^ " -> " ^ pprint_list l2
-  | Ast.RuleSet (None, l2) -> "RuleSet: " ^ "None" ^ " -> " ^ pprint_list l2
-  | Ast.Declaration (l, l2) -> "Declaration: " ^ (pprint l) ^ " -> " ^ (pprint l2)
+  | Ast.RuleSet (Some l, None) -> "RuleSet: " ^ (pprint_list l) ^ " -> None"
+  | Ast.RuleSet (Some l, Some l2) -> "RuleSet: " ^ (pprint_list l) ^ " -> " ^ pprint_list l2
+  | Ast.RuleSet (None, Some l2) -> "RuleSet: " ^ "None" ^ " -> " ^ pprint_list l2
+  | Ast.RuleSet (None, None) -> "RuleSet: None -> None"
+  | Ast.Declaration (l, l2) -> "Declaration: " ^ (pprint l) ^ " -> " ^ (pprint_list l2)
   | Function (name, None) -> Printf.sprintf "Function(%s)()" name
   | Function (name, Some(values)) -> Printf.sprintf "Function(%s)(%s)" name @@ pprint_list values
   | Block None -> "{}"

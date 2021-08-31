@@ -17,8 +17,8 @@ type expr =
   | SemiColon
 
   | Selector of expr list
-  | RuleSet of expr option * expr list
-  | Declaration of expr * expr
+  | RuleSet of expr list option * expr list option
+  | Declaration of expr * expr list
   | Function of string * expr list option
   | Block of expr list option
   | PBlock of expr list option

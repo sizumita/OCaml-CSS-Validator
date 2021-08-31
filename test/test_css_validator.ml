@@ -12,6 +12,12 @@ let parse2 text =
   let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_string text in 
   Lexer.parse_prog lexbuf |> List.hd
 
+let parse_file filename =
+  let channel = open_in filename in
+  let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel channel in
+  let _ = close_in channel in
+  Lexer.parse_prog lexbuf
+
 let test_ident_1 _ = assert_equal (Ast.Ident "abc") (parse "abc")
 let test_ident_2 _ = assert_equal (Ast.Ident "-abc") (parse "-abc")
 

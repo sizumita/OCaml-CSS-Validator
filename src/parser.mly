@@ -20,8 +20,8 @@ tokens:
 token:
   | s = PERCENTAGE { Percentage s }
   | s = STRING { String s }
-  | s = IDENT EOF { Ident s }
-  | s = HASH EOF { Hash s }
+  | s = IDENT { Ident s }
+  | s = HASH { Hash s }
   | s = ATKEYWORD { AtKeyword s }
   | s = NUMBER { Number s }
   | s = DIMENSION { Dimension s }
@@ -40,64 +40,45 @@ statement:
   | set = ruleset { set }
   | rule = at_rule { rule }
 
+// @media screen {...}
 at_rule:
-  | name = ATKEYWORD; args = option(list(any)); value = block { AtRule (name, args, Some(value))}
-  | name = ATKEYWORD; args = option(list(any)); SEMICOLON { AtRule (name, args, None) }
+  | name = ATKEYWORD; component = option(list(component_value)) SEMICOLON; { AtRule (name, component, None) }
+  | name = ATKEYWORD; component = option(list(component_value)) LB set = option(list(at_rule_value)); RB { AtRule (name, component, Some(Block set)) }
 
-block_values:
-  | value = any { value }
-  | value = block { value }
-  | SEMICOLON { SemiColon }
+at_rule_value:
+  | set = ruleset { set }
+  | rule = at_rule { rule }
 
-block:
-  | LB values = option(list(block_values)) RB { Block values }
+component_value:
+  | value = IDENT { Ident value }
+  | value = STRING { String value }
+  | value = PERCENTAGE { Percentage value }
+  | value = HASH { Hash value }
+  | value = NUMBER { Number value }
+  | value = DIMENSION { Dimension value }
+  | value = URI { Uri value }
+  | value = UNICODE_RANGE { UnicodeRange value }
+  | LP components = option(list(component_value)); RP { PBlock components }
+  | LS components = option(list(component_value)); RS { SBlock components }
+  | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
+  | declaration_ = declaration { declaration_ }
 
+// div {...}
 ruleset:
-  | selector_ = option(selector) LB RB { RuleSet (selector_, []) }
-  | selector_ = option(selector) LB list = declaration_list; RB { RuleSet (selector_, list) }
+  | component = option(list(component_value)); LB value = option(declaration_list); RB { RuleSet (component, value) }
+
+ruleset_value:
+  | IDENT COLON IDENT SEMICOLON { Null }
 
 declaration_list:
-  | values = list(declaration) { values }
-
-selector:
-  | values = list(any) { Selector values }
+  | first = declaration SEMICOLON rest = declaration_list { first :: rest }
+  | first = declaration option(SEMICOLON) { [first] }
 
 declaration:
-  | property = IDENT; COLON value = declaration_value; SEMICOLON { Declaration (Ident property, value) }
+  | prop = IDENT; COLON value = list(component_value) { Declaration (Ident prop, value) }
+  | prop = IDENT; COLON block_ = block { Declaration (Ident prop, [block_])}
 
-declaration_value:
-  | value = any { value }
-  | value = block { value }
-
-function_bracket_value:
-  | value = any { value }
-  | value = unused { value }
-
-function_:
-  | name = FUNCTION; values = option(list(function_bracket_value)); RP { Function (name, values) }
-
-any:
-  | value = IDENT { Ident value }
-  | value = NUMBER { Number value }
-  | value = PERCENTAGE { Percentage value }
-  | value = DIMENSION { Dimension value }
-  | value = STRING { String value }
-  | value = URI { Uri value }
-  | value = HASH { Hash value }
-  | value = UNICODE_RANGE { UnicodeRange value }
-  | INCLUDES { Includes }
-  | DASHMATCH { DashMatch }
-  | COLON { Colon }
-  | rule = at_rule { rule }
-  | func = function_ { func }
-  | LP values = option(list(function_bracket_value)); RP { PBlock values }
-  | LS values = option(list(function_bracket_value)); RS { SBlock values }
-
-unused:
-  | block_ = block { block_ }
-  | SEMICOLON { SemiColon }
-  | CDO { Cdo }
-  | CDC { Cdc }
-
+block:
+  | LB components = option(list(component_value)); RB { Block components }
 
 
