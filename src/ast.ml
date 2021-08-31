@@ -16,6 +16,7 @@ type expr =
   | SemiColon
   | Comma
   | Plus
+  | Child
 
   | Selector of expr list
   | RuleSet of expr list option * expr list option
@@ -25,11 +26,11 @@ type expr =
   | PBlock of expr list option
   | SBlock of expr list option
   | AtRule of string * expr list option * expr option
-  | Match of expr * expr
-  | DashMatch of expr * expr
-  | SpaceInMatch of expr * expr
-  | StartsMatch of expr * expr
-  | EndsMatch of expr * expr
-  | InMatch of expr * expr
+  | Match of expr * expr * string option
+  | DashMatch of expr * expr * string option
+  | SpaceInMatch of expr * expr * string option
+  | StartsMatch of expr * expr * string option
+  | EndsMatch of expr * expr * string option
+  | InMatch of expr * expr * string option
 
   [@@deriving show]

@@ -6,7 +6,7 @@ open Ast
 %token CDO CDC COLON SEMICOLON
 // = |= ~= ^= $= *=
 %token MATCH DASHMATCH SPACEINMATCH STARTSMATCH ENDSMATCH INMATCH
-%token COMMA PLUS
+%token COMMA PLUS CHILD
 %token LP RP LB RB LS RS
 %token EOF
 
@@ -58,12 +58,12 @@ at_rule_value:
   | rule = at_rule { rule }
 
 matchs:
-  | l = component_value MATCH r = component_value { Match (l, r) }
-  | l = component_value DASHMATCH r = component_value { DashMatch (l, r) }
-  | l = component_value SPACEINMATCH r = component_value { SpaceInMatch (l, r) }
-  | l = component_value STARTSMATCH r = component_value { StartsMatch (l, r) }
-  | l = component_value ENDSMATCH r = component_value { EndsMatch (l, r) }
-  | l = component_value INMATCH r = component_value { InMatch (l, r) }
+  | l = component_value; MATCH r = component_value; case = option(IDENT) { Match (l, r, case) }
+  | l = component_value; DASHMATCH r = component_value; case = option(IDENT) { DashMatch (l, r, case) }
+  | l = component_value; SPACEINMATCH r = component_value; case = option(IDENT) { SpaceInMatch (l, r, case) }
+  | l = component_value; STARTSMATCH r = component_value; case = option(IDENT) { StartsMatch (l, r, case) }
+  | l = component_value; ENDSMATCH r = component_value; case = option(IDENT) { EndsMatch (l, r, case) }
+  | l = component_value; INMATCH r = component_value; case = option(IDENT) { InMatch (l, r, case) }
 
 component_value:
   | value = IDENT { Ident value }
@@ -78,6 +78,7 @@ component_value:
   | COMMA { Comma }
   | PLUS { Plus }
   | COLON { Colon }
+  | CHILD { Child }
   | LP components = option(list(component_value)); RP { PBlock components }
   | LS components = option(list(component_value)); RS { SBlock components }
   | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }

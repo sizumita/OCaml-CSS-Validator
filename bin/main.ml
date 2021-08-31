@@ -1,5 +1,10 @@
 open Css_validator
 
+let some i =
+  match i with
+    | None -> "None"
+    | Some(i) -> i
+
 let rec pprint = function
   | Ast.Ident s -> s
   | Ast.String s -> "\"" ^ s ^ "\""
@@ -36,12 +41,13 @@ let rec pprint = function
   | AtRule (name, Some(args), Some(value)) -> Printf.sprintf "%s (%s) (%s)" name (pprint_list args) (pprint value)
   | Comma -> "."
   | Plus -> "+"
-  | Match (l, r) -> Printf.sprintf "Match(%s, %s)" (pprint l) (pprint r)
-  | DashMatch (l, r) -> Printf.sprintf "DashMatch(%s, %s)" (pprint l) (pprint r)
-  | StartsMatch (l, r) -> Printf.sprintf "StartsMatch(%s, %s)" (pprint l) (pprint r)
-  | EndsMatch (l, r) -> Printf.sprintf "EndsMatch(%s, %s)" (pprint l) (pprint r)
-  | SpaceInMatch (l, r) -> Printf.sprintf "SpaceInMatch(%s, %s)" (pprint l) (pprint r)
-  | InMatch (l, r) -> Printf.sprintf "InMatch(%s, %s)" (pprint l) (pprint r)
+  | Child -> "<"
+  | Match (l, r, c) -> Printf.sprintf "Match(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | DashMatch (l, r, c) -> Printf.sprintf "DashMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | StartsMatch (l, r, c) -> Printf.sprintf "StartsMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | EndsMatch (l, r, c) -> Printf.sprintf "EndsMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | SpaceInMatch (l, r, c) -> Printf.sprintf "SpaceInMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | InMatch (l, r, c) -> Printf.sprintf "InMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
   
 
 

@@ -23,10 +23,10 @@ let l_char = [%sedlex.regexp?
 ]
 let w = [%sedlex.regexp? Star Chars "\t\r\n"]
 let nonascii = [%sedlex.regexp? 0x80 .. 0x10ffff]
-let unicode = [%sedlex.regexp? '\\', Rep (('0'..'9' | 'a'..'f'), 1 .. 6), Opt ("\r\n" | Chars "\n\r\t")]
-let escape = [%sedlex.regexp? unicode | ('\\', Compl ('\n' | '\r' | '0'..'9' | 'a'..'f'))]
-let nmchar = [%sedlex.regexp? (('_' | 'a'..'z' | '0'..'9' | '-') | nonascii | escape)]
-let nmstart = [%sedlex.regexp? ('_' | 'a'..'z') | nonascii | escape]
+let unicode = [%sedlex.regexp? '\\', Rep (('0'..'9' | 'A'..'Z' | 'a'..'f'), 1 .. 6), Opt ("\r\n" | Chars "\n\r\t")]
+let escape = [%sedlex.regexp? unicode | ('\\', Compl ('\n' | '\r' | '0'..'9' | 'A'..'Z' | 'a'..'f'))]
+let nmchar = [%sedlex.regexp? (('_' | 'A'..'Z' | 'a'..'z' | '0'..'9' | '-') | nonascii | escape)]
+let nmstart = [%sedlex.regexp? ('_' | 'A'..'Z' | 'a'..'z') | nonascii | escape]
 let name = [%sedlex.regexp? Plus nmchar]
 let ident = [%sedlex.regexp? Opt '-', nmstart, Star nmchar]
 let nl = [%sedlex.regexp? '\n' | "\r\n" | '\r']
@@ -139,6 +139,7 @@ let rec lex lexbuf =
     | "$=" -> update lexbuf ; ENDSMATCH
     | "*=" -> update lexbuf ; INMATCH
     | "=" -> update lexbuf ; MATCH
+    | '>' -> update lexbuf ; CHILD
 
     | eof ->
       update lexbuf ;
