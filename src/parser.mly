@@ -3,7 +3,10 @@ open Ast
 %}
 
 %token <string> IDENT ATKEYWORD STRING HASH PERCENTAGE NUMBER DIMENSION URI UNICODE_RANGE FUNCTION
-%token CDO CDC COLON SEMICOLON INCLUDES DASHMATCH
+%token CDO CDC COLON SEMICOLON
+// = |= ~= ^= $= *=
+%token MATCH DASHMATCH SPACEINMATCH STARTSMATCH ENDSMATCH INMATCH
+%token COMMA PLUS
 %token LP RP LB RB LS RS
 %token EOF
 
@@ -54,6 +57,14 @@ at_rule_value:
   | set = ruleset { set }
   | rule = at_rule { rule }
 
+matchs:
+  | l = component_value MATCH r = component_value { Match (l, r) }
+  | l = component_value DASHMATCH r = component_value { DashMatch (l, r) }
+  | l = component_value SPACEINMATCH r = component_value { SpaceInMatch (l, r) }
+  | l = component_value STARTSMATCH r = component_value { StartsMatch (l, r) }
+  | l = component_value ENDSMATCH r = component_value { EndsMatch (l, r) }
+  | l = component_value INMATCH r = component_value { InMatch (l, r) }
+
 component_value:
   | value = IDENT { Ident value }
   | value = STRING { String value }
@@ -63,6 +74,10 @@ component_value:
   | value = DIMENSION { Dimension value }
   | value = URI { Uri value }
   | value = UNICODE_RANGE { UnicodeRange value }
+  | match_ = matchs { match_ }
+  | COMMA { Comma }
+  | PLUS { Plus }
+  | COLON { Colon }
   | LP components = option(list(component_value)); RP { PBlock components }
   | LS components = option(list(component_value)); RS { SBlock components }
   | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }

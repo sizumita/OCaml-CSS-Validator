@@ -7,7 +7,6 @@ div {
 }
 
 #main,
-.content,
 article {
   font-size: 1.1em;
 }
@@ -15,5 +14,5 @@ article {
 h1, h2, h3, h4, h5, h6 { font-family: helvetica; }
 
 h1 { font-family: sans-serif }
-h2:maybe-unsupported { font-family: sans-serif }
+h2 { font-family: sans-serif }
 h3 { font-family: sans-serif }

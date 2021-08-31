@@ -14,7 +14,6 @@ let rec pprint = function
   | Ast.Cdc -> "CDC"
   | Ast.Null -> "Null"
   | Ast.Includes -> "Includes"
-  | Ast.DashMatch -> "DashMatch"
   | Ast.Colon -> "Colon"
   | Ast.SemiColon -> "SemiColon"
   | Ast.Selector l -> "Selector: " ^ pprint_list l
@@ -35,6 +34,15 @@ let rec pprint = function
   | AtRule (name, Some(args), None) -> Printf.sprintf "%s (%s) ()" name (pprint_list args)
   | AtRule (name, None, Some(value)) -> Printf.sprintf "%s () (%s)" name (pprint value)
   | AtRule (name, Some(args), Some(value)) -> Printf.sprintf "%s (%s) (%s)" name (pprint_list args) (pprint value)
+  | Comma -> "."
+  | Plus -> "+"
+  | Match (l, r) -> Printf.sprintf "Match(%s, %s)" (pprint l) (pprint r)
+  | DashMatch (l, r) -> Printf.sprintf "DashMatch(%s, %s)" (pprint l) (pprint r)
+  | StartsMatch (l, r) -> Printf.sprintf "StartsMatch(%s, %s)" (pprint l) (pprint r)
+  | EndsMatch (l, r) -> Printf.sprintf "EndsMatch(%s, %s)" (pprint l) (pprint r)
+  | SpaceInMatch (l, r) -> Printf.sprintf "SpaceInMatch(%s, %s)" (pprint l) (pprint r)
+  | InMatch (l, r) -> Printf.sprintf "InMatch(%s, %s)" (pprint l) (pprint r)
+  
 
 
 and pprint_list l =

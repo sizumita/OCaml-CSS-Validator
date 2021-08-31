@@ -12,9 +12,10 @@ type expr =
   | Cdc
   | Null
   | Includes
-  | DashMatch
   | Colon
   | SemiColon
+  | Comma
+  | Plus
 
   | Selector of expr list
   | RuleSet of expr list option * expr list option
@@ -24,5 +25,11 @@ type expr =
   | PBlock of expr list option
   | SBlock of expr list option
   | AtRule of string * expr list option * expr option
+  | Match of expr * expr
+  | DashMatch of expr * expr
+  | SpaceInMatch of expr * expr
+  | StartsMatch of expr * expr
+  | EndsMatch of expr * expr
+  | InMatch of expr * expr
 
   [@@deriving show]

@@ -131,8 +131,14 @@ let rec lex lexbuf =
     | '}' -> update lexbuf ; RB
     | '[' -> update lexbuf ; LS
     | ']' -> update lexbuf ; RS
-    | "~=" -> update lexbuf ; INCLUDES
-    | "|=" -> DASHMATCH
+    | ',' -> update lexbuf ; COMMA
+    | '+' -> update lexbuf ; PLUS
+    | "|=" -> update lexbuf ; DASHMATCH
+    | "~=" -> update lexbuf ; SPACEINMATCH
+    | "^=" -> update lexbuf ; STARTSMATCH
+    | "$=" -> update lexbuf ; ENDSMATCH
+    | "*=" -> update lexbuf ; INMATCH
+    | "=" -> update lexbuf ; MATCH
 
     | eof ->
       update lexbuf ;
