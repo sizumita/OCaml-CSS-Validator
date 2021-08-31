@@ -76,6 +76,7 @@ component_value:
   | value = URI { Uri value }
   | value = UNICODE_RANGE { UnicodeRange value }
   | match_ = matchs { match_ }
+  | COLON COLON component = component_value { PseudoElements component }
   | COLON component = component_value { PseudoClass component }
   | COMMA { Comma }
   | PLUS { Plus }

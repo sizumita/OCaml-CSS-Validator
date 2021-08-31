@@ -26,6 +26,7 @@ let rec pprint = function
 
   | ClassName s -> "." ^ s
   | PseudoClass l -> ":" ^ (pprint l)
+  | PseudoElements l -> "::" ^ (pprint l)
   | Ast.Selector l -> "Selector: " ^ pprint_list l
   | Ast.RuleSet (Some l, None) -> "RuleSet: " ^ (pprint_list l) ^ " -> None"
   | Ast.RuleSet (Some l, Some l2) -> "RuleSet: " ^ (pprint_list l) ^ " -> " ^ pprint_list l2

@@ -22,6 +22,7 @@ type expr =
 
   | ClassName of string
   | PseudoClass of expr
+  | PseudoElements of expr
   | Selector of expr list
   | RuleSet of expr list option * expr list option
   | Declaration of expr * expr list

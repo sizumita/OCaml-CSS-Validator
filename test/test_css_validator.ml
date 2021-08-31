@@ -76,6 +76,7 @@ let test_universal_selector _ = assert_equal true (parse_file "universal_selecto
 
 let test_pseudo_class _ = assert_equal true (parse_file "pseudo_class.css")
 
+let test_pseudo_element _ = assert_equal true (parse_file "pseudo_element.css")
 let suite = 
   "suite">:::
   [
@@ -111,6 +112,7 @@ let suite =
     "test_type_selector">:: test_type_selector;
     "test_universal_selector">:: test_universal_selector;
     "test_pseudo_class">:: test_pseudo_class;
+    "test_pseudo_element">:: test_pseudo_element;
   ]
 
 let () = run_test_tt_main suite
