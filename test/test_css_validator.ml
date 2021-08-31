@@ -13,10 +13,9 @@ let parse2 text =
   Lexer.parse_prog lexbuf |> List.hd
 
 let parse_file filename =
-  let channel = open_in filename in
+  let channel = open_in ("../../../test/css/" ^ filename) in
   let lexbuf = Lexer.create_lexbuf @@ Sedlexing.Utf8.from_channel channel in
-  let _ = close_in channel in
-  Lexer.parse_prog lexbuf
+  let _ = Lexer.parse_prog lexbuf in true
 
 let test_ident_1 _ = assert_equal (Ast.Ident "abc") (parse "abc")
 let test_ident_2 _ = assert_equal (Ast.Ident "-abc") (parse "-abc")
@@ -55,6 +54,26 @@ let test_unicode_range_2 _ = assert_equal (Ast.UnicodeRange "u+123?") (parse "u+
 let test_unicode_range_3 _ = assert_equal (Ast.UnicodeRange "U+0-7F") (parse "U+0-7F")
 let test_unicode_range_4 _ = assert_equal (Ast.UnicodeRange "U+0025-00FF") (parse "U+0025-00FF")
 
+let test_adjacent_sibling_combinator _ = assert_equal true (parse_file "adjacent_sibling_combinator.css")
+
+let test_ID_selector _ = assert_equal true (parse_file "ID_selector.css")
+
+let test_attribute_selector _ = assert_equal true (parse_file "attribute_selector.css")
+
+let test_child_combinator _ = assert_equal true (parse_file "child_combinator.css")
+
+let test_class_selector _ = assert_equal true (parse_file "class_selector.css")
+
+let test_descendant_combinator _ = assert_equal true (parse_file "descendant_combinator.css")
+
+let test_general_sibling_combinator _ = assert_equal true (parse_file "general_sibling_combinator.css")
+
+let test_selector_list _ = assert_equal true (parse_file "selector_list.css")
+
+let test_type_selector _ = assert_equal true (parse_file "type_selector.css")
+
+let test_universal_selector _ = assert_equal true (parse_file "universal_selector.css")
+
 let suite = 
   "suite">:::
   [
@@ -79,6 +98,16 @@ let suite =
     "test_unicode_range_2">:: test_unicode_range_2;
     "test_unicode_range_3">:: test_unicode_range_3;
     "test_unicode_range_4">:: test_unicode_range_4;
+    "test_adjacent_sibling_combinator">:: test_adjacent_sibling_combinator;
+    "test_ID_selector">:: test_ID_selector;
+    "test_attribute_selector">:: test_attribute_selector;
+    "test_child_combinator">:: test_child_combinator;
+    "test_class_selector">:: test_class_selector;
+    "test_descendant_combinator">:: test_descendant_combinator;
+    "test_general_sibling_combinator">:: test_general_sibling_combinator;
+    "test_selector_list">:: test_selector_list;
+    "test_type_selector">:: test_type_selector;
+    "test_universal_selector">:: test_universal_selector;
   ]
 
 let () = run_test_tt_main suite

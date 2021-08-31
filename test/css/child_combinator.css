@@ -1,0 +1,9 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator */
+
+span {
+    background-color: white;
+  }
+  
+  div > span {
+    background-color: DodgerBlue;
+  }

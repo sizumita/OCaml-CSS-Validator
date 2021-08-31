@@ -1,0 +1,22 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors */
+
+* [lang^=en] {
+    color: green;
+  }
+  
+  *.warning {
+    color: red;
+  }
+  
+  *#maincontent {
+    border: 1px solid blue;
+  }
+  
+  .floating {
+    float: left
+  }
+  
+  /* automatically clear the next sibling after a floating element */
+  .floating + * {
+    clear: left;
+  }

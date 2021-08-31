@@ -1,0 +1,6 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors */
+
+/* The element with id="demo" */
+#demo {
+    border: red 2px solid;
+  }

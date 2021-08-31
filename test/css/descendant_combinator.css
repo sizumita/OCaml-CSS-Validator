@@ -1,0 +1,6 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator */
+
+/* List items that are descendants of the "my-things" list */
+ul.my-things li {
+    margin: 2em;
+  }

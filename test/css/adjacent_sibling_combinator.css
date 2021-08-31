@@ -1,0 +1,5 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator */
+
+li:first-of-type + li {
+  color: red;
+}

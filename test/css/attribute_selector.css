@@ -1,0 +1,87 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors */
+
+a {
+    color: blue;
+  }
+  
+  /* Internal links, beginning with "#" */
+  a[href^="#"] {
+    background-color: gold;
+  }
+  
+  /* Links with "example" anywhere in the URL */
+  a[href*="example"] {
+    background-color: silver;
+  }
+  
+  /* Links with "insensitive" anywhere in the URL,
+     regardless of capitalization */
+  a[href*="insensitive" i] {
+    color: cyan;
+  }
+  
+  /* Links with "cAsE" anywhere in the URL,
+  with matching capitalization */
+  a[href*="cAsE" s] {
+    color: pink;
+  }
+  
+  /* Links that end in ".org" */
+  a[href$=".org"] {
+    color: red;
+  }
+  
+  /* Links that start with "https" and end in ".org" */
+  a[href^="https"][href$=".org"] {
+    color: green;
+  }
+
+/* All divs with a `lang` attribute are bold. */
+div[lang] {
+    font-weight: bold;
+  }
+  
+  /* All divs without a `lang` attribute are italicized. */
+  div:not([lang]) {
+    font-style: italic;
+  }
+  
+  /* All divs in US English are blue. */
+  div[lang~="en-us"] {
+    color: blue;
+  }
+  
+  /* All divs in Portuguese are green. */
+  div[lang="pt"] {
+    color: green;
+  }
+  
+  /* All divs in Chinese are red, whether
+     simplified (zh-CN) or traditional (zh-TW). */
+  div[lang|="zh"] {
+    color: red;
+  }
+  
+  /* All divs with a Traditional Chinese
+     `data-lang` are purple. */
+  /* Note: You could also use hyphenated attributes
+     without double quotes */
+  div[data-lang="zh-TW"] {
+    color: purple;
+  }
+
+  /* List types require the case sensitive flag due to a quirk in how HTML treats the type attribute. */
+ol[type="a"] {
+    list-style-type: lower-alpha;
+    background: red;
+  }
+  
+  ol[type="a" s] {
+    list-style-type: lower-alpha;
+    background: lime;
+  }
+  
+  ol[type="A" s] {
+    list-style-type: upper-alpha;
+    background: lime;
+  }
