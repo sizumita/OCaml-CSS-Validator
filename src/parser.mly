@@ -25,7 +25,6 @@ token:
   | s = STRING { String s }
   | s = IDENT { Ident s }
   | s = HASH { Hash s }
-  | s = ATKEYWORD { AtKeyword s }
   | s = NUMBER { Number s }
   | s = DIMENSION { Dimension s }
   | s = URI { Uri s }

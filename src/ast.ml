@@ -1,7 +1,6 @@
 type expr =
   | Ident of string
   | String of string
-  | AtKeyword of string
   | Hash of string
   | Number of string
   | Dimension of string
@@ -10,8 +9,6 @@ type expr =
   | UnicodeRange of string
   | Cdo
   | Cdc
-  | Null
-  | Includes
   | Colon
   | SemiColon
   | Comma

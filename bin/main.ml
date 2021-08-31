@@ -9,7 +9,6 @@ let rec pprint = function
   | Ast.Ident s -> s
   | Ast.String s -> "\"" ^ s ^ "\""
   | Ast.Hash s -> "Hash " ^ s
-  | Ast.AtKeyword s -> "AtKeyword " ^ s
   | Ast.Number s -> "Number " ^ s
   | Ast.Percentage s -> s
   | Ast.Dimension s -> "Dimension " ^ s
@@ -17,8 +16,6 @@ let rec pprint = function
   | Ast.UnicodeRange s -> "UnicodeRange " ^ s
   | Ast.Cdo -> "CDO"
   | Ast.Cdc -> "CDC"
-  | Ast.Null -> "Null"
-  | Ast.Includes -> "Includes"
   | Ast.Colon -> "Colon"
   | Ast.SemiColon -> "SemiColon"
   | Sibiling -> "~"

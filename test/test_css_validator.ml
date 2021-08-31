@@ -23,7 +23,6 @@ let test_ident_2 _ = assert_equal (Ast.Ident "-abc") (parse "-abc")
 let test_string_1 _ = assert_equal (Ast.String "\"abc\"") (parse "\"abc\"")
 let test_string_2 _ = assert_equal (Ast.String "'abc'") (parse "'abc'")
 
-let test_atkeyword_1 _ = assert_equal (Ast.AtKeyword "@abc") (parse "@abc")
 
 let test_hash_1 _ = assert_equal (Ast.Hash "#abc") (parse "#abc")
 
@@ -87,7 +86,6 @@ let suite =
     "test_ident_2">:: test_ident_2;
     "test_string_1">:: test_string_1;
     "test_string_2">:: test_string_2;
-    "test_atkeyword_1">:: test_atkeyword_1;
     "test_hash_1">:: test_hash_1;
     "test_number_1">:: test_number_1;
     "test_number_2">:: test_number_2;
