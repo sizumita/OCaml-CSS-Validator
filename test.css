@@ -11,3 +11,21 @@ div p {
 }
 
 p {counter-increment: par-num;}
+
+@media screen and (min-width: 900px) {
+    article {
+      padding: 1rem 3rem;
+    }
+  }
+
+  @supports (display: flex) {
+    @media screen and (min-width: 900px) {
+      article {
+        display: flex;
+      }
+    }
+  }
+
+  @media print {
+    body { font-size: 10pt }
+  }

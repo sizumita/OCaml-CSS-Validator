@@ -47,7 +47,6 @@ at_rule:
 block_values:
   | value = any { value }
   | value = block { value }
-  | value = ATKEYWORD { AtKeyword value }
   | SEMICOLON { SemiColon }
 
 block:
@@ -69,7 +68,6 @@ declaration:
 declaration_value:
   | value = any { value }
   | value = block { value }
-  | value = ATKEYWORD { AtKeyword value }
 
 function_bracket_value:
   | value = any { value }
@@ -90,13 +88,13 @@ any:
   | INCLUDES { Includes }
   | DASHMATCH { DashMatch }
   | COLON { Colon }
+  | rule = at_rule { rule }
   | func = function_ { func }
   | LP values = option(list(function_bracket_value)); RP { PBlock values }
   | LS values = option(list(function_bracket_value)); RS { SBlock values }
 
 unused:
   | block_ = block { block_ }
-  | value = ATKEYWORD { AtKeyword value }
   | SEMICOLON { SemiColon }
   | CDO { Cdo }
   | CDC { Cdc }
