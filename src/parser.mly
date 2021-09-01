@@ -49,22 +49,23 @@ statement:
 
 // @media screen {...}
 at_rule:
-  | name = ATKEYWORD; component = option(list(component_value)) SEMICOLON; { AtRule (name, component, None) }
-  | name = ATKEYWORD; component = option(list(component_value)) LB set = declaration_list; RB { AtRule (name, component, Some(Block set)) }
-  | name = ATKEYWORD; component = option(list(component_value)) LB set = list(at_rule_value); RB { AtRule (name, component, Some(Block set)) }
-  | name = ATKEYWORD; component = option(list(component_value)) LB RB { AtRule (name, component, Some(Block [])) }
+  | name = ATKEYWORD; component = option(list(at_rule_component_value)) SEMICOLON; { AtRule (name, component, None) }
+  | name = ATKEYWORD; component = option(list(at_rule_component_value)) LB set = declaration_list; RB { AtRule (name, component, Some(Block set)) }
+  | name = ATKEYWORD; component = option(list(at_rule_component_value)) LB set = list(at_rule_value); RB { AtRule (name, component, Some(Block set)) }
+  | name = ATKEYWORD; component = option(list(at_rule_component_value)) LB RB { AtRule (name, component, Some(Block [])) }
+
+at_rule_component_value:
+  | COLON value = pseudo_value { PseudoClass value }
+  | value = STRING { String value }
+  | value = IDENT { Ident value }
+  | LS declaration_ = declaration; RS { SBlock [declaration_] }
+  | LP declaration_ = declaration; RP { SBlock [declaration_] }
+  | uri = URI { Uri uri }
+  | func = function_ { func }
 
 at_rule_value:
   | set = ruleset { set }
   | rule = at_rule { rule }
-
-matchs:
-  | l = component_value; MATCH r = component_value; case = option(IDENT) { Match (l, r, case) }
-  | l = component_value; DASHMATCH r = component_value; case = option(IDENT) { DashMatch (l, r, case) }
-  | l = component_value; SPACEINMATCH r = component_value; case = option(IDENT) { SpaceInMatch (l, r, case) }
-  | l = component_value; STARTSMATCH r = component_value; case = option(IDENT) { StartsMatch (l, r, case) }
-  | l = component_value; ENDSMATCH r = component_value; case = option(IDENT) { EndsMatch (l, r, case) }
-  | l = component_value; INMATCH r = component_value; case = option(IDENT) { InMatch (l, r, case) }
 
 component_value:
   | DOT value = IDENT { ClassName value }
@@ -77,6 +78,7 @@ component_value:
   | value = URI { Uri value }
   | value = UNICODE_RANGE { UnicodeRange value }
   | match_ = matchs { match_ }
+  | uri = URI { Uri uri }
   | COLON COLON component = component_value { PseudoElements component }
   | COLON component = component_value { PseudoClass component }
   | COMMA { Comma }
@@ -125,6 +127,13 @@ pseudo_value:
   | func = function_ { func }
   | value = IDENT { Ident value }
 
+matchs:
+  | l = component_value; MATCH r = component_value; case = option(IDENT) { Match (l, r, case) }
+  | l = component_value; DASHMATCH r = component_value; case = option(IDENT) { DashMatch (l, r, case) }
+  | l = component_value; SPACEINMATCH r = component_value; case = option(IDENT) { SpaceInMatch (l, r, case) }
+  | l = component_value; STARTSMATCH r = component_value; case = option(IDENT) { StartsMatch (l, r, case) }
+  | l = component_value; ENDSMATCH r = component_value; case = option(IDENT) { EndsMatch (l, r, case) }
+  | l = component_value; INMATCH r = component_value; case = option(IDENT) { InMatch (l, r, case) }
 
 declaration_list:
   | first = declaration SEMICOLON rest = declaration_list { first :: rest }

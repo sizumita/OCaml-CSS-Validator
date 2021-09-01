@@ -49,6 +49,7 @@ let rec pprint = function
   | EndsMatch (l, r, c) -> Printf.sprintf "EndsMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
   | SpaceInMatch (l, r, c) -> Printf.sprintf "SpaceInMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
   | InMatch (l, r, c) -> Printf.sprintf "InMatch(%s, %s, %s)" (pprint l) (pprint r) (some c)
+  | Attribute l -> Printf.sprintf "Attribute(%s)" (pprint l)
   
 
 

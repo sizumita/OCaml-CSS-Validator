@@ -21,7 +21,7 @@ let l_char = [%sedlex.regexp?
   | ('\\', Rep ('0', 0 .. 4), ("4c" | "6c"), ("\r\n" | Chars "\t\r\n"))
   | ('\\', 'l')
 ]
-let w = [%sedlex.regexp? Star Chars "\t\r\n"]
+let w = [%sedlex.regexp? Star white_space]
 let nonascii = [%sedlex.regexp? 0x80 .. 0x10ffff]
 let unicode = [%sedlex.regexp? '\\', Rep (('0'..'9' | 'A'..'Z' | 'a'..'f'), 1 .. 6), Opt ("\r\n" | Chars "\n\r\t")]
 let escape = [%sedlex.regexp? unicode | ('\\', Compl ('\n' | '\r' | '0'..'9' | 'A'..'Z' | 'a'..'f'))]
@@ -36,7 +36,7 @@ let string = [%sedlex.regexp? (
 )]
 let url = [%sedlex.regexp?
     (u_char, r_char, l_char, '(', w, string, w, ')')
-  | (u_char, r_char, l_char, '(', w, Star (* これでいいのかわからない *)(Compl ')'), w, ')')
+  | (u_char, r_char, l_char, '(', Star w, Star (* これでいいのかわからない *)(Compl ')'), w, ')')
 ]
 let unicode_range_start = [%sedlex.regexp? "u+" | "U+"]
 let unicode_chars = [%sedlex.regexp? '0'..'9' | 'a'..'f' | 'A' .. 'F']
