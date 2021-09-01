@@ -79,6 +79,8 @@ let test_pseudo_element _ = assert_equal true (parse_file "pseudo_element.css")
 
 let test_at_rule _ = assert_equal true (parse_file "at_rule.css")
 
+let test_important _ = assert_equal true (parse_file "important.css")
+
 let suite = 
   "suite">:::
   [
@@ -115,6 +117,7 @@ let suite =
     "test_pseudo_class">:: test_pseudo_class;
     "test_pseudo_element">:: test_pseudo_element;
     "test_at_rule">:: test_at_rule;
+    "test_important">:: test_important;
   ]
 
 let () = run_test_tt_main suite

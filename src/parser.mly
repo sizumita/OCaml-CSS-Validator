@@ -3,7 +3,7 @@ open Ast
 %}
 
 %token <string> IDENT ATKEYWORD STRING HASH PERCENTAGE NUMBER DIMENSION URI UNICODE_RANGE FUNCTION
-%token CDO CDC COLON SEMICOLON
+%token CDO CDC COLON SEMICOLON IMPORTANT
 // = |= ~= ^= $= *=
 %token MATCH DASHMATCH SPACEINMATCH STARTSMATCH ENDSMATCH INMATCH
 %token COMMA PLUS CHILD DOT SIBILING UNIVERSAL
@@ -87,6 +87,7 @@ component_value:
   | UNIVERSAL { Universal }
   | LP RP { PBlock [] }
   | LS RS { SBlock [] }
+  | IMPORTANT { Important }
   | LP components = list(component_value); RP { PBlock components }
   | LS components = list(component_value); RS { SBlock components }
   | LS declaration_ = declaration; RS { SBlock [declaration_] }

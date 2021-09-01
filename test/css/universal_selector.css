@@ -20,3 +20,11 @@
   .floating + * {
     clear: left;
   }
+
+  *#foo {
+    color: green;
+  }
+  
+  *[id="foo"] {
+    color: purple;
+  }

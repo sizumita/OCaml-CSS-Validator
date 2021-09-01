@@ -111,6 +111,7 @@ let rec lex lexbuf =
     | white_space ->
       update lexbuf;
       lex lexbuf
+    | '!', Star white_space, "important" -> update lexbuf ; IMPORTANT
     | url -> update lexbuf ; URI (lexeme lexbuf)
     | unicode_range -> update lexbuf ; UNICODE_RANGE (lexeme lexbuf)
     | string -> update lexbuf ; STRING (lexeme lexbuf)

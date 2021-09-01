@@ -16,6 +16,7 @@ type expr =
   | Child
   | Sibiling
   | Universal
+  | Important
 
   | ClassName of string
   | PseudoClass of expr

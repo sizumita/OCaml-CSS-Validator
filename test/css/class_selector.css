@@ -15,3 +15,11 @@
   li.spacious.elegant {
     margin: 2em;
   }
+
+  div.outer p {
+    color: orange;
+  }
+  
+  div:not(.outer) p {
+    color: blueviolet;
+  }

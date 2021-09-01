@@ -20,6 +20,7 @@ let rec pprint = function
   | Ast.SemiColon -> "SemiColon"
   | Sibiling -> "~"
   | Universal -> "*"
+  | Important -> "!important"
 
   | ClassName s -> "." ^ s
   | PseudoClass l -> ":" ^ (pprint l)
