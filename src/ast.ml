@@ -35,5 +35,6 @@ type expr =
   | StartsMatch of expr * expr * string option
   | EndsMatch of expr * expr * string option
   | InMatch of expr * expr * string option
+  | Attribute of expr
 
   [@@deriving show]

@@ -11,7 +11,9 @@ div p {
 }
 
 
-p {counter-increment: par-num;}
+a {
+  text-align: center;
+}
 
 @media screen and (min-width: 900px) {
     article {

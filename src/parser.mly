@@ -91,14 +91,40 @@ component_value:
   | LP components = list(component_value); RP { PBlock components }
   | LS components = list(component_value); RS { SBlock components }
   | LS declaration_ = declaration; RS { SBlock [declaration_] }
-  | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
+  | func = function_ { func }
 
 // div {...}
 ruleset:
-  | component = option(list(component_value)); LB value = option(declaration_list); RB { RuleSet (component, value) }
+  | component = option(list(ruleset_component_value)); LB value = option(declaration_list); RB { RuleSet (component, value) }
+
+ruleset_component_value:
+  | DOT value = IDENT { ClassName value }
+  | value = IDENT { Ident value }
+  | value = HASH { Hash value }
+  | match_ = matchs { match_ }
+  | COLON COLON value = pseudo_value { PseudoElements value }
+  | COLON value = pseudo_value { PseudoClass value }
+  | COMMA { Comma }
+  | PLUS { Plus }
+  | COLON { Colon }
+  | CHILD { Child }
+  | SIBILING { Sibiling }
+  | UNIVERSAL { Universal }
+  | LS RS { SBlock [] }
+  | attr = attribute; { attr }
+  | LS declaration_ = declaration; RS { SBlock [declaration_] }
+
+attribute:
+  | LS match_ = matchs; RS { Attribute match_ }
+  | LS value = IDENT; RS { Attribute (Ident value) }
 
 ruleset_value:
   | IDENT COLON IDENT SEMICOLON { Null }
+
+pseudo_value:
+  | func = function_ { func }
+  | value = IDENT { Ident value }
+
 
 declaration_list:
   | first = declaration SEMICOLON rest = declaration_list { first :: rest }
@@ -112,4 +138,5 @@ block:
   | LB components = list(component_value); RB { Block components }
   | LB RB { Block [] }
 
-
+function_:
+  | name = FUNCTION; components = option(list(component_value)); RP { Function (name, components) }
