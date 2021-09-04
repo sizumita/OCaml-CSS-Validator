@@ -37,4 +37,6 @@ type expr =
   | InMatch of expr * expr * string option
   | Attribute of expr
 
+  | Charset of string
+
   [@@deriving show]

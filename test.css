@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import "list.css";
 
 div p {
@@ -20,3 +21,4 @@ a {
       padding: 1rem 3rem;
     }
 }
+

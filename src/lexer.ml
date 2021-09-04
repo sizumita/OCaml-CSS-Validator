@@ -157,11 +157,21 @@ let rec lex lexbuf =
   | eof -> update lexbuf; raise_ParseError lexbuf
   | any -> update lexbuf ; comment lexbuf
   | _ -> update lexbuf; raise_ParseError lexbuf
+and expect_first lexbuf = 
+  let buf = lexbuf.stream in
+  match%sedlex buf with
+  | "@charset", white_space -> begin
+    update lexbuf; match%sedlex buf with
+    | string, ';' -> update lexbuf ; CHARSET (lexeme lexbuf)
+    | _ -> lex lexbuf
+  end
+  | _ -> lex lexbuf
+
 
 let parse f lexbuf =
   let lexer () =
     let ante_position = lexbuf.pos in
-    let token = lex lexbuf in
+    let token = expect_first lexbuf in
     let post_position = lexbuf.pos
     in (token, ante_position, post_position) in
   let parser =

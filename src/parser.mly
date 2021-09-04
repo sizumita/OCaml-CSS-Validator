@@ -6,6 +6,7 @@ open Ast
 %token CDO CDC COLON SEMICOLON IMPORTANT
 // = |= ~= ^= $= *=
 %token MATCH DASHMATCH SPACEINMATCH STARTSMATCH ENDSMATCH INMATCH
+%token <string> CHARSET
 %token COMMA PLUS CHILD DOT SIBILING UNIVERSAL
 %token LP RP LB RB LS RS
 %token EOF
@@ -47,8 +48,12 @@ statement:
   | set = ruleset { set }
   | rule = at_rule { rule }
 
+charset:
+  | value = CHARSET { Charset value }
+
 // @media screen {...}
 at_rule:
+  | value = charset { value }
   | name = ATKEYWORD; component = option(list(at_rule_component_value)) SEMICOLON; { AtRule (name, component, None) }
   | name = ATKEYWORD; component = option(list(at_rule_component_value)) LB set = declaration_list; RB { AtRule (name, component, Some(Block set)) }
   | name = ATKEYWORD; component = option(list(at_rule_component_value)) LB set = list(at_rule_value); RB { AtRule (name, component, Some(Block set)) }
